@@ -49,7 +49,7 @@ shinyUI(pageWithSidebar(
     mainPanel(
     h3("Results:"),
     h4("Quick result:"),
-    textOutput("quick"),
+    tableOutput("quick"),
     
     h4("Graphical results:"),
     plotOutput("decision"),

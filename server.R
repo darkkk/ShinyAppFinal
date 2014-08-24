@@ -45,17 +45,7 @@ shinyServer(function(input, output) {
     return(list("OptimalDecision" = decision, "ExpectedIncome" = expval, "MinimumIncome" = mpay))
   }
   
-  inputs <- reactive({
-    p = input$sliderID1;
-    goodS = input$numID2;
-    badS = input$numID3;
-    nyear = input$numID1;
-    startWork = min(which(result()[[1]] == 1))
-    nameCol = c("Number of years", "Good salary", "Bad salary", "Probability","StartWork");
-    valueCol = c(nyear,goodS, badS, p, startWork);
-    df <- data.frame("Variable" = nameCol, "Value" = valueCol);
-     
-  })
+
   
   
   result <- reactive({
@@ -99,10 +89,14 @@ shinyServer(function(input, output) {
     
   })  
 
-  output$quick <- renderText({
+  output$quick <- renderTable({
     input$goButton
     isolate({
-      paste("Optimal is to take the not so good job in the year ", min(which(result()[[1]] == 1)), ", if the good job offer does not come earlier.", sep = "");
+      startWork = c(min(which(result()[[1]] == 1)))
+      minIncome = round(sum(result()[[3]][startWork:length(result()[[3]])]),0)
+      txt = c("Start work in year", "Minimal cumulative income");
+      dfrQuick = data.frame("Result" = txt, "Value" = c(startWork, minIncome))
+      
       
       
     })
